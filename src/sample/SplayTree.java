@@ -1,7 +1,11 @@
-package sample;
 
 // Juan Diego Solorzano 18151
 // Extraido de https://www.sanfoundry.com/java-program-implement-splay-tree/
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class SplayTree {
     TreeNode root;
@@ -29,7 +33,7 @@ public class SplayTree {
 
     }
 
-    public Entry find(int key) {
+    public Entry find(String key) {
         TreeNode lastNodeInSearch = findLastNodeInSearch(key);
         rebalanceTree(lastNodeInSearch);
         Entry closestEntry = lastNodeInSearch.getEntry();
@@ -41,6 +45,7 @@ public class SplayTree {
         TreeNode parent = nodeToSplay.getParent();
         TreeNode grandParent = null;
         if (parent != null) {
+
             grandParent = parent.getParent();
         }
 
@@ -153,6 +158,65 @@ public class SplayTree {
             root = splayNode;
         }
 
+    }
+
+    public void add(String archivo, SplayTree tree) throws IOException {
+        File file = new File(archivo);
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+        String text;
+        while ((text = br.readLine()) != null) {
+            text = text.toLowerCase();
+            String[] tx = text.split("");
+            String ch = "";
+            String[] k = {};
+            for (int i = 0; i < tx.length; i++) {
+                if ((!tx[i].equals(" ") && !(tx[i].equals(",")) && !(tx[i].equals(";")))) {
+                    ch = ch + tx[i];
+                }
+                if (!ch.equals("") && (tx[i].equals(" "))) {
+                    if (k.length == 1) {
+                        k[0] = ch;
+                    }else if(k.length == 2){
+                        k[1] = ch;
+                        tree.insert(new Entry(k[0], k[1]));
+                        ch = "";
+                    }
+
+
+                }
+                }
+            }
+
+        }
+
+    public String traducir(String nombre, SplayTree tree) throws IOException {
+
+        File file = new File(nombre);
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+        String line;
+        String[] translated = null;
+        int n= 0;
+        while((line = br.readLine()) != null){
+            translated = line.split(" ");
+            for (String node:translated) {
+                node = node.toLowerCase();
+                translated[n] = node;
+                n++;
+            }
+        }
+        String oracion = "";
+        for (int i=0; translated[i] != null; i++){
+            if (tree.find(translated[i]) != null){
+                oracion += tree.find(translated[i]);
+            }
+            else{
+                oracion += "*" + translated[i] + "*";
+            }
+        }
+
+        return oracion;
     }
 
 

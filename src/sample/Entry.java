@@ -1,10 +1,8 @@
-package sample;
-
 // Juan Diego Solorzano 18151
 // Extraido de https://www.sanfoundry.com/java-program-implement-splay-tree/
 
 public class Entry implements Comparable<Entry> {
-    private int key;
+    private String key;
     private String value;
 
     @Override
@@ -15,12 +13,12 @@ public class Entry implements Comparable<Entry> {
                 '}';
     }
 
-    public Entry(int key, String value) {
+    public Entry(String key, String value) {
         this.key = key;
         this.value = value;
     }
 
-    public int getKey() {
+    public String getKey() {
         return key;
     }
 
@@ -31,9 +29,9 @@ public class Entry implements Comparable<Entry> {
 
     @Override
     public int compareTo(Entry that) {
-        if (this.key > that.key) {
+        if (this.key.compareTo(that.key) < 0) {
             return 1;
-        } else if (that.key > this.key) {
+        } else if (this.key.compareTo(that.key) > 0) {
             return -1;
         } else {
             return 0;

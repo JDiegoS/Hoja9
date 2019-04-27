@@ -1,8 +1,8 @@
-package sample;
-
-
 // Juan Diego Solorzano 18151
 // Extraido de http://www.codebytes.in/2014/10/red-black-tree-java-implementation.html
+
+import java.io.*;
+import java.util.ArrayList;
 
 public class RedBlackTree {
 
@@ -27,7 +27,7 @@ public class RedBlackTree {
             return;
         }
         printTree(node.left);
-        System.out.print(((node.color == RED) ? "Color: Red " : "Color: Black ") + "Key: " + node.key + " Parent: " + node.parent.key + "\n");
+        System.out.print((node.color == RED) ? "Color:Red" : "Color: Black" + "Espanol: " + node.key + "\n");
         printTree(node.right);
     }
 
@@ -295,5 +295,62 @@ public class RedBlackTree {
             subTreeRoot = subTreeRoot.left;
         }
         return subTreeRoot;
+    }
+
+    public void add(String archivo, RedBlackTree tree) throws IOException {
+        File file = new File(archivo);
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+        String text;
+        while ((text = br.readLine()) != null) {
+            text = text.toLowerCase();
+            String[] tx = text.split("");
+            String ch = "";
+            for (int i = 0; i < tx.length; i++) {
+                if ((!tx[i].equals(" ") && !(tx[i].equals(",")) && !(tx[i].equals(";")))) {
+                    ch = ch + tx[i];
+                }
+                if (!ch.equals("") && (tx[i].equals(" "))) {
+                    Node node = new Node(i);
+                    insert(node);
+                    ch = "";
+                }
+                if (i == tx.length - 1) {
+                    Node node = new Node(i);
+                    insert(node);
+                }
+            }
+
+        }
+
+    }
+    public String traducir(String nombre) throws IOException {
+
+        File file = new File(nombre);
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+        String line;
+        String[] translated = null;
+        int n= 0;
+        while((line = br.readLine()) != null){
+            translated = line.split(" ");
+            for (String node:translated) {
+                node = node.toLowerCase();
+                translated[n] = node;
+                n++;
+            }
+        }
+        String oracion = "";
+        for (int i=0; translated[i] != null && i<translated.length -1; i++){
+            Node node = new Node(i);
+            if (findNode(node, root) != null){
+                 oracion += node.key;
+            }
+            else{
+                oracion += "*" + translated[i] + "*";
+            }
+        }
+
+        return oracion;
     }
 }
